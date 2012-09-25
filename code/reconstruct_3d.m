@@ -38,7 +38,7 @@ matches = load([data_dir '/' name '_matches.txt']);
 
 
 % visualize matches (disable or enable this whenever you want)
-if true
+if false
     figure;
     imshow([I1 I2]); hold on;
     plot(matches(:,1), matches(:,2), '+r');
@@ -97,7 +97,7 @@ end
 
 j = 1; % pick one out the best combinations
 
-fprintf('Reconstruction error = %f',errs(ti(j),ri(j)));
+fprintf('Reconstruction error = %f\n',errs(ti(j),ri(j)));
 
 t2 = t{ti(j)}; R2 = R{ri(j)};
 P2 = K2*[R2 t2];
