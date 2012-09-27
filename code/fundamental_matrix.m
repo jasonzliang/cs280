@@ -39,7 +39,7 @@ function [F res_err] = fundamental_matrix(Matrix)
     
     %% residual, calculation
     ELine=X2'*F;
-    res_err=sum((sum(ELine.*X1',2)./sqrt(sum(ELine(:,1:2).^2,2))).^2);
+    res_err=sum((sum(ELine.*X1',2)./sqrt(sum(ELine(:,1:2).^2,2))).^2)./size(ELine,1);
 end
     
     

@@ -43,7 +43,7 @@ if true
     imshow([I1 I2]); hold on;
     plot(matches(:,1), matches(:,2), '+r');
     plot(matches(:,3)+size(I1,2), matches(:,4), '+r');
-    line([matches(:,1) matches(:,3) + size(I1,2)]', matches(:,[2 4])', 'Color', 'r');
+%     line([matches(:,1) matches(:,3) + size(I1,2)]', matches(:,[2 4])', 'Color', 'r');
 end
 % -------------------------------------------------------------------------
 %% --------- Find fundamental matrix --------------------------------------
