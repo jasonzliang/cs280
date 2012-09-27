@@ -1,18 +1,4 @@
 function [F res_err] = fundamental_matrix(Matrix)
-    
-% %     T_mean=mean(Matrix,1);
-% % 
-% %     x1=Matrix(:,1:2);
-% %     x2=Matrix(:,3:4);
-% %     
-% %     T_scale1=sqrt(2./sum(var(x1,1)));
-% %     T_scale2=sqrt(2./sum(var(x2,1)));
-% %     
-% %     for i=1:2
-% %         x1(:,i)=(x1(:,i)-T_mean(i)).*2./(T_scale1);
-% %         x2(:,i)=(x2(:,i)-T_mean(i)).*2./(T_scale2);
-% %     end
-        
     %% Homogeneious Coordinate
     X1=[Matrix(:,1) Matrix(:,2) ones(size(Matrix(:,1)))]';
     X2=[Matrix(:,3) Matrix(:,4) ones(size(Matrix(:,3)))]';
@@ -52,8 +38,8 @@ function [F res_err] = fundamental_matrix(Matrix)
     F=T2'*F*T1;
     
     %% residual, calculation
-    Square=(X1-X2).^2;
-    res_err=mean(Square(:,1)+Square(:,2),1);
+    ELine=X2'*F;
+    res_err=sum((sum(ELine.*X1',2)./sqrt(sum(ELine(:,1:2).^2,2))).^2);
 end
     
     
