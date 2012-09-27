@@ -38,7 +38,7 @@ matches = load([data_dir '/' name '_matches.txt']);
 
 
 % visualize matches (disable or enable this whenever you want)
-if false
+if true
     figure;
     imshow([I1 I2]); hold on;
     plot(matches(:,1), matches(:,2), '+r');
@@ -83,7 +83,7 @@ for ti = 1:length(t)
         
         P2 = K2*[R2 t2];
         
-        [points_3d errs(ti,ri)] = find_3d_points(); %<---------------------- You write this one!
+        [points_3d errs(ti,ri)] = find_3d_points(P2, matches); %<---------------------- You write this one!
         
         Z1 = points_3d(:,3);
         Z2 = R2(3,:)*points_3d'+t2(3);Z2 = Z2';
@@ -97,18 +97,17 @@ end
 
 j = 1; % pick one out the best combinations
 
-fprintf('Reconstruction error = %f\n',errs(ti(j),ri(j)));
+fprintf('Reconstruction error = %f',errs(ti(j),ri(j)));
 
 t2 = t{ti(j)}; R2 = R{ri(j)};
 P2 = K2*[R2 t2];
 
 % compute the 3D points with the final P2
-points = find_3d_points(); % <---------------------------------------------- You have already written this one!
+points = find_3d_points(P2,matches); % <---------------------------------------------- You have already written this one!
 
 %% -------- plot points and centers of cameras ----------------------------
 
-
-plot_3d(); % <-------------------------------------------------------------- You write this one!
+plot_3d(points, R2, t2); % <-------------------------------------------------------------- You write this one!
 
 
 

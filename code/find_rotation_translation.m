@@ -1,10 +1,12 @@
 function [R t] = find_rotation_translation(E)% <------------------------------------- You write this one!
-    [U X V]=svd(E);
-    S = U;
-    Z = [1 0 0; 0 1 0; 0 0 0];
-    R_90 = [0 -1 0; 1 0 0; 0 0 1];
-    t_ = S*Z*R_90*S';
-    R_ = (V*inv(R_90')*inv(S))';
-    t = {t_ ,-t_};
-    R = {R_, -R_};
+    [U S V]=svd(E);
+    
+    t=cell(2,1);
+    t{1}=U(:,end);
+    t{2}=-U(:,end);
+    %... various of t
+    R=cell(2,1);
+    R{1}=-U*[0 1 0; -1 0 0; 0 0 1]'*V';
+    R{2}=-U*[0 -1 0; 1 0 0; 0 0 1]'*V';
+    
 end
