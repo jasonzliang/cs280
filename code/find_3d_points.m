@@ -1,6 +1,5 @@
-function [points_3d errs] = find_3d_points(P2, matches) %<---------------------- You write this one!
+function [points_3d errs] = find_3d_points(P1,P2, matches) %<---------------------- You write this one!
     if nargout>=1
-        P1=[eye(3) zeros(3,1)];
         
         A=zeros(4,4);
         points_3d=zeros(4, size(matches',2));
