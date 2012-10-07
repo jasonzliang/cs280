@@ -7,3 +7,4 @@ for k=1:num_images
     [r,c]=ind2sub([numrows numcols],k);
     img((r-1)*28+1:r*28,(c-1)*28+1:c*28)=images(:,:,k);
 end
+
