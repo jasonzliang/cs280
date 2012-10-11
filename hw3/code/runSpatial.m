@@ -3,16 +3,16 @@ function runSpatial
   errorRate = zeros(1,7);
   trainingset = [100, 200, 500, 1000, 2000, 5000, 10000];
   
+  y=load('../data/test.mat');
+  images = y.test(1).images;
+  ylabels = y.test(1).labels;
+  testMatrix = createMatrix(images);
   for i = 1:7
     images = rawtraindata.train{i}.images;
     labels = rawtraindata.train{i}.labels;
     trainmatrix = createMatrix(images);
     model=train(labels, sparse(trainmatrix));
-    y=load('../data/test.mat');
-    images = y.test(1).images;
-    labels = y.test(1).labels;
-    testMatrix = createMatrix(images);
-    [l,a]=predict(labels, sparse(testMatrix), model);
+    [l,a]=predict(ylabels, sparse(testMatrix), model);
     errorRate(i) = 100 - a(1);
   end
   
