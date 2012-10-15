@@ -1,4 +1,4 @@
-function runHOG
+function runHOG()
   rawtraindata = load('../data/train_small.mat');
   errorRate = zeros(1,7);
   trainingset = [100, 200, 500, 1000, 2000, 5000, 10000];
@@ -11,18 +11,21 @@ function runHOG
     images = rawtraindata.train{i}.images;
     labels = rawtraindata.train{i}.labels;
     trainmatrix = createMatrix(images);
-    model=train(labels, sparse(trainmatrix));
+    model=train(labels, sparse(trainmatrix),'-s 3');
     [l,a]=predict(ylabels, sparse(testMatrix), model);
     errorRate(i) = 100 - a(1);
   end
-  
+
   figure; 
-  title('PHOGs As Features');
+  title('PHOGs As Features (using gaussian derivative filter, normalized)');
   ylabel('Error Rate %');
   xlabel('# of Training Examples');
   hold on;
   plot(trainingset,errorRate); 
   plot(trainingset,errorRate,'r*'); 
+  for i=1:7
+    text(trainingset(i),errorRate(i),num2str(errorRate(i)),'VerticalAlignment','bottom');
+  end
   hold off;
   
 end
@@ -72,18 +75,17 @@ function histogram = countHistograms(submatrix, normalize)
 end
 
 function gmat = createGradientMatrix(image)
+  image = double(image);
+  G=fspecial('gaussian');
+  dGx=imfilter(G,[1, 0, -1],'symmetric','conv');
+  dGy=imfilter(G,[1; 0; -1],'symmetric','conv');
   [d1, d2] = size(image);
   gmat = zeros(d1, d2);
-  for i = 2:d1-1
-    for j = 2:d2-1
-      %todo: replace with gaussian derivative filter
-      ygrad = cast(image(i-1,j)-image(i+1,j), 'double');
-      xgrad = cast(image(i,j-1)-image(i,j+1), 'double');
-      if xgrad == 0
-        angle = 90;
-      else
-        angle = atand(ygrad/xgrad);
-      end
+  xmat = conv2(image, dGx);
+  ymat = conv2(image, dGy);
+  for i = 1:d1
+    for j = 1:d2
+      angle = radtodeg(atan2(ymat(i,j), (xmat(i,j) + 0.00001)));
       gmat(i,j) = mod(round(angle/40), 9);
     end
   end

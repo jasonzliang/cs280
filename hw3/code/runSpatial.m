@@ -23,6 +23,9 @@ function runSpatial
   hold on;
   plot(trainingset,errorRate); 
   plot(trainingset,errorRate,'r*'); 
+  for i=1:7
+    text(trainingset(i),errorRate(i),num2str(errorRate(i)),'VerticalAlignment','bottom');
+  end
   hold off;
   
 end
